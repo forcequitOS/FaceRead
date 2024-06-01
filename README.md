@@ -15,7 +15,7 @@ A lot.
 - Allow you to view photos from a Photos or Portraits watch face (for now)
 - Provide color previews of watch faces
 
-All of these features are being worked on, just not actively.
+*All of these features are being worked on*, just not actively.
 
 **So why does this exist?**
 A few reasons.
