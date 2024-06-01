@@ -1,5 +1,6 @@
-# Watch Face Inspector (/ FaceRead/FaceEdit)
+# Watch Face Inspector (/FaceRead/FaceEdit)
 ### A simple tool to gather data about Apple Watch Face (.watchface) files
+*This is currently a public beta and is incomplete. Even when it is complete, don't rely on this for anything, not that you would anyways.*
 
 **What does this do?**
 It's simple.
