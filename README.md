@@ -7,11 +7,12 @@ It's simple.
 - Extract any given .watchface file as a .zip (as that's all .watchface files are, I'll make a writeup on that someday.)
 - Parse information from face.json to gather the bundle ID and analytics ID
 - Parse information from metadata.json to gather the complication layout and naming
+- Match a list of analytics IDs to marketing names (which I've gathered myself)
 
 **What doesn't this do?**
 A lot.
 - Provide a way to edit watch faces (currently) or visually preview them
-- Provide the actual marketing names for watch faces (This is a matter of time and effort, though.)
+- Provide the names of select watch faces (Most are there, though)
 - Allow you to view photos from a Photos or Portraits watch face (for now)
 - Provide color previews of watch faces
 
