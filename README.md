@@ -14,7 +14,8 @@ A lot.
 - Provide the actual marketing names for watch faces (This is a matter of time and effort, though.)
 - Allow you to view photos from a Photos or Portraits watch face (for now)
 - Provide color previews of watch faces
-All of these are being worked on, just not actively.
+
+All of these features are being worked on, just not actively.
 
 **So why does this exist?**
 A few reasons.
