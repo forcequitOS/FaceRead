@@ -42,7 +42,7 @@ button {
     font-size: 14px;
     align-items: center;
     padding: 6px 14px;
-    border-radius: 6px;
+    border-radius: 10px;
     border: none;
     color: #fff;
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
