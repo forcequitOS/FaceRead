@@ -24,6 +24,7 @@ body {
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
+    margin-top: 15px;
     max-width: 80%;
     max-height: 80%;
     overflow: auto;
@@ -45,7 +46,7 @@ button {
   border: none;
   color: #fff;
   background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
-   background-origin: border-box;
+  background-origin: border-box;
   box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
   user-select: none;
   -webkit-user-select: none;
