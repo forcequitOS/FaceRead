@@ -76,13 +76,15 @@ document.getElementById('customButton').addEventListener('click', () => {
 document.getElementById('fileInput').addEventListener('change', async (event) => {
     const file = event.target.files[0];
     const output = document.getElementById('jsonOutput');
-    const snapshotImage = document.getElementById('snapshotImage');
-
+    const snapshotImageElement = document.getElementById('snapshotImage');
+    
     if (!file) {
         return;
     }
 
     if (!file.name.endsWith('.watchface')) {
+        snapshotImageElement.style.display = 'none';
+        snapshotImageElement.src = '';
         output.textContent = 'Unsupported file, only .watchface files can be processed.';
         return;
     }
@@ -91,9 +93,9 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
 
     try {
         const zipData = await zip.loadAsync(file);
-        const snapshotFile = zipData.file('snapshot.png');
         const faceJsonFile = zipData.file('face.json');
         const metadataJsonFile = zipData.file('metadata.json');
+        const snapshotImageFile = zipData.file('snapshot.png');
 
         let bundleId = '';
         let analyticsId = '';
@@ -110,6 +112,16 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
             const metadataJsonText = await metadataJsonFile.async('text');
             const metadataJson = JSON.parse(metadataJsonText);
             complications = metadataJson.complications_names || {};
+        }
+
+        if (snapshotImageFile) {
+            const snapshotImageBlob = await snapshotImageFile.async('blob');
+            const snapshotImageUrl = URL.createObjectURL(snapshotImageBlob);
+            snapshotImageElement.src = snapshotImageUrl;
+            snapshotImageElement.style.display = 'block';
+        } else {
+            snapshotImageElement.style.display = 'none';
+            snapshotImageElement.src = '';
         }
 
         const faceName = await fetchFaceNames(analyticsId);
@@ -137,15 +149,9 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         }
 
         output.textContent = outputText;
-
-        if (snapshotFile) {
-            const snapshotData = await snapshotFile.async('base64');
-            snapshotImage.src = `data:image/png;base64,${snapshotData}`;
-            snapshotImage.style.display = 'block';
-        } else {
-            snapshotImage.style.display = 'none';
-        }
     } catch (err) {
+        snapshotImageElement.style.display = 'none';
+        snapshotImageElement.src = '';
         output.textContent = `Error: ${err.message}`;
     }
 });
