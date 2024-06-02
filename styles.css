@@ -24,13 +24,15 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
     max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
 }
 
 #snapshotImage {
     display: none;
     margin-left: auto;
     margin-right: auto;
-    width: 35%;
+    width: 25%;
 }
 
 button {
