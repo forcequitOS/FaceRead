@@ -45,7 +45,7 @@ const faceDB = {
     "seltzer": "Lunar",
     "metallic-r": "Liquid Metal",
     "modular": "Legacy Modular",
-    "astrononmy": "Legacy Astronomy",
+    "astronomy": "Legacy Astronomy",
     "kaleidoscope-r": "Kaleidoscope",
     "whistler-analog": "Infograph",
     "spectrum-analog": "Gradient",
