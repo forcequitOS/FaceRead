@@ -1,4 +1,4 @@
-// The list, an array of all watch faces I could get on watchOS 10 with an Apple Watch Series 7. This is missing likely just some legacy faces and the Hermes special edition faces, since I'm not made of money.
+// This is the faceDB list, which I also have mirrored as a Gist on my GitHub!
 const faceDB = {
     "xlarge-r": "X-Large",
     "globetrotter": "World Time",
@@ -37,13 +37,15 @@ const faceDB = {
     "motion": "Motion",
     "cloudraker": "Modular Duo",
     "whistler-subdials": "Modular Compact",
-    "whistler-digital": "Infograph Modular",
+    "whistler-digital": "Modular",
     "mickey-r": "Mickey Mouse",
     "kuiper": "Metropolitan",
     "blackcomb": "Meridian",
     "collie": "Memoji",
     "seltzer": "Lunar",
     "metallic-r": "Liquid Metal",
+    "modular": "Legacy Modular",
+    "astrononmy": "Legacy Astronomy",
     "kaleidoscope-r": "Kaleidoscope",
     "whistler-analog": "Infograph",
     "spectrum-analog": "Gradient",
@@ -64,9 +66,10 @@ const faceDB = {
     "activity-analog-r": "Activity Analog"
 };
 
-async function fetchFaceNames(analyticsId) {
-    const faceName = faceDB[analyticsId];
-    return faceName ? faceName : null; // Return null if face name is not found
+// I don't understand any of this JavaScript
+async function fetchFaceNames(id, isFaceType) {
+    const faceName = faceDB[id];
+    return faceName ? faceName : null;
 }
 
 document.getElementById('customButton').addEventListener('click', () => {
@@ -99,6 +102,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
 
         let bundleId = '';
         let analyticsId = '';
+        let faceType = '';
         let complications = {};
 
         if (faceJsonFile) {
@@ -106,6 +110,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
             const faceJson = JSON.parse(faceJsonText);
             bundleId = faceJson['bundle id'] || '';
             analyticsId = faceJson['analytics id'] || '';
+            faceType = faceJson['face type'] || '';
         }
 
         if (metadataJsonFile) {
@@ -124,7 +129,8 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
             snapshotImageElement.src = '';
         }
 
-        const faceName = await fetchFaceNames(analyticsId);
+        const idToUse = analyticsId || faceType;
+        const faceName = await fetchFaceNames(idToUse, !analyticsId);
 
         let outputText = '';
         if (faceName) {
@@ -135,17 +141,20 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         }
         if (analyticsId) {
             outputText += `Analytics ID: ${analyticsId}\n`;
+        } else if (faceType) {
+            outputText += `Face Type: ${faceType}\n`;
         }
+        outputText += `\n`
 
         if (Object.keys(complications).length > 0) {
-            outputText += '\nComplications:\n';
+            outputText += 'Complications:\n';
             const sortedKeys = Object.keys(complications).sort();
             for (const key of sortedKeys) {
                 const formattedKey = formatComplicationKey(key);
                 outputText += `${formattedKey}: ${complications[key]}\n`;
             }
         } else {
-            outputText += '\nComplications Unsupported';
+            outputText += 'Complications Unsupported';
         }
 
         output.textContent = outputText;
