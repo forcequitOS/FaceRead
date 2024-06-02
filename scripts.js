@@ -37,7 +37,7 @@ const faceDB = {
     "motion": "Motion",
     "cloudraker": "Modular Duo",
     "whistler-subdials": "Modular Compact",
-    "whistler-digital": "Modular",
+    "whistler-digital": "Infograph Modular",
     "mickey-r": "Mickey Mouse",
     "kuiper": "Metropolitan",
     "blackcomb": "Meridian",
