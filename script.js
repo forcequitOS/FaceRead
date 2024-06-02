@@ -66,7 +66,7 @@ const faceDB = {
     "activity-analog-r": "Activity Analog"
 };
 
-// I don't understand any of this JavaScript
+// I do not understand JavaScript.
 async function fetchFaceNames(id, isFaceType) {
     const faceName = faceDB[id];
     return faceName ? faceName : null;
@@ -103,6 +103,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         let bundleId = '';
         let analyticsId = '';
         let faceType = '';
+        let colorData = null;
         let complications = {};
 
         if (faceJsonFile) {
@@ -111,6 +112,9 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
             bundleId = faceJson['bundle id'] || '';
             analyticsId = faceJson['analytics id'] || '';
             faceType = faceJson['face type'] || '';
+            if (faceJson.customization) {
+                colorData = faceJson.customization.color || null;
+            }
         }
 
         if (metadataJsonFile) {
@@ -136,6 +140,17 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         if (faceName) {
             outputText += `Name: ${faceName}\n`;
         }
+        
+        if (colorData) {
+            if (typeof colorData === 'string') {
+                if (colorData.includes('.')) {
+                    outputText += `Color ID: ${colorData}\n`;
+                } else {
+                    outputText += `Color: ${capitalize(colorData)}\n`;
+                }
+            }
+        }
+        
         if (bundleId) {
             outputText += `Bundle ID: ${bundleId}\n`;
         }
@@ -144,6 +159,16 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         } else if (faceType) {
             outputText += `Face Type: ${faceType}\n`;
         }
+
+        if (colorData['slots']) {
+            outputText += '\nColors:\n';
+            const slots = colorData['slots'];
+            Object.keys(slots).sort((a, b) => a - b).forEach(slot => {
+                outputText += `Slot ${parseInt(slot) + 1}: ${capitalize(slots[slot])}\n`;
+            });
+            outputText += `\n`
+        }
+
         outputText += `\n`
 
         if (Object.keys(complications).length > 0) {
