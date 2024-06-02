@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:description" content="Provide a Watch Face, get some information.">
+    <meta name="description" content="Provide a Watch Face, get some information.">
+    <meta property="og:title" content="Watch Face Inspector">
+    <meta property="og:image" content="thumbnail.png"> 
+    <title>FaceRead</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>FaceRead</h1>
+        <input type="file" id="fileInput" accept=".watchface" style="display:none;">
+        <button id="customButton">Choose Watch Face</button>
+        <div id="output">
+            <h3>Watch Face Inspector</h3>
+            <img id="snapshotImage" alt="Snapshot of Watch Face produced by source">
+            <pre id="jsonOutput"></pre>
+        </div>
+    </div>
+    <div class="footer">
+        <p class="footer-text">Created by <a href="https://github.com/CtrliPhones/WFI" class="footer-link">CtrliPhones</a> in CotEditor</p>
+        <p class="footer-text">Version 1.0 Public Beta III</p>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
