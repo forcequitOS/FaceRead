@@ -160,13 +160,14 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
             outputText += `Face Type: ${faceType}\n`;
         }
 
-        if (colorData['slots']) {
-            outputText += '\nColors:\n';
-            const slots = colorData['slots'];
-            Object.keys(slots).sort((a, b) => a - b).forEach(slot => {
-                outputText += `Slot ${parseInt(slot) + 1}: ${capitalize(slots[slot])}\n`;
-            });
-            outputText += `\n`
+        if (colorData) {
+            if (colorData['slots']) {
+                outputText += '\nColors:\n';
+                const slots = colorData['slots'];
+                Object.keys(slots).sort((a, b) => a - b).forEach(slot => {
+                    outputText += `Slot ${parseInt(slot) + 1}: ${capitalize(slots[slot])}\n`;
+                });
+            }
         }
 
         outputText += `\n`
