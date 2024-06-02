@@ -54,6 +54,10 @@ button {
     cursor: pointer;
 }
 
+button:active {
+    background: linear-gradient(180deg, #27A2F3 0%, #1B95E8 100%);
+}
+
 #output {
     margin-top: 20px;
 }
