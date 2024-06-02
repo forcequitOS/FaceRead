@@ -8,10 +8,11 @@ It's simple.
 - Parse information from face.json to gather the bundle ID and analytics ID
 - Parse information from metadata.json to gather the complication layout and naming
 - Match a list of analytics IDs to marketing names (which I've gathered myself)
+- Gathers the already bundled snapshot image from the watch face file to display to the user
 
 **What doesn't this do?**
 A lot.
-- Provide a way to edit watch faces (currently) or visually preview them
+- Provide a way to edit watch faces (currently)
 - Provide the names of select watch faces (Most are there, though)
 - Allow you to view photos from a Photos or Portraits watch face (for now)
 - Provide color previews of watch faces
