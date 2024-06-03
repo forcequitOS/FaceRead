@@ -7,7 +7,6 @@ body {
     height: 100vh;
     margin: 0;
     flex-direction: column;
-    overflow: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
