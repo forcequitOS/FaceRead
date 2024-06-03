@@ -100,24 +100,23 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
     handleFile(file);
 });
 
-const dropZone = document.getElementById('customButton');
-
-dropZone.addEventListener('dragover', (event) => {
+document.addEventListener('dragover', (event) => {
     event.preventDefault();
-    dropZone.classList.add('drag-over');
+    document.body.classList.add('drag-over');
 });
 
-dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('drag-over');
+document.addEventListener('dragleave', () => {
+    document.body.classList.remove('drag-over');
 });
 
-dropZone.addEventListener('drop', (event) => {
+document.addEventListener('drop', (event) => {
     event.preventDefault();
-    dropZone.classList.remove('drag-over');
+    document.body.classList.remove('drag-over');
     const file = event.dataTransfer.files[0];
     handleFile(file);
 });
 
+// Function to handle file processing
 async function handleFile(file) {
     const output = document.getElementById('jsonOutput');
     const snapshotImageElement = document.getElementById('snapshotImage');
@@ -180,11 +179,8 @@ async function handleFile(file) {
 
         if (colorData) {
             if (typeof colorData === 'string') {
-                if (colorData.includes('.')) {
-                    outputText += `Color ID: ${colorData}\n`;
-                } else {
-                    outputText += `Color: ${capitalize(colorData)}\n`;
-                }
+                const colorDescription = parseColorData(colorData);
+                outputText += colorDescription + '\n';
             }
         }
 
@@ -197,14 +193,12 @@ async function handleFile(file) {
             outputText += `Face Type: ${faceType}\n`;
         }
 
-        if (colorData) {
-            if (colorData['slots']) {
-                outputText += '\nColors:\n';
-                const slots = colorData['slots'];
-                Object.keys(slots).sort((a, b) => a - b).forEach(slot => {
-                    outputText += `Stripe ${parseInt(slot) + 1}: ${capitalize(slots[slot])}\n`;
-                });
-            }
+        if (colorData && colorData['slots']) {
+            outputText += '\nColors:\n';
+            const slots = colorData['slots'];
+            Object.keys(slots).sort((a, b) => a - b).forEach(slot => {
+                outputText += `Stripe ${parseInt(slot) + 1}: ${capitalize(slots[slot])}\n`;
+            });
         }
 
         outputText += `\n`
@@ -234,9 +228,44 @@ function formatComplicationKey(key) {
 }
 
 function capitalize(word) {
-    const parts = word.match(/[a-zA-Z]+|[0-9]+/g);
-    if (!parts) return '';
-    return parts.map(part => {
-        return part.charAt(0).toUpperCase() + part.slice(1);
-    }).join(' ');
+    return word.replace(/([a-z])([A-Z])/g, '$1 $2')
+               .replace(/-/g, ' ')
+               .replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function parseColorData(colorData) {
+    if (colorData.includes('&')) {
+        const colors = colorData.split('&').map(color => capitalize(color.trim().replace(/\./g, ' ')));
+        return `Colors: ${colors.join(', ')}`;
+    }
+
+    if (colorData.includes(':')) {
+        const baseColorData = colorData.split(':')[0];
+        const parts = baseColorData.split('.');
+        if (parts.length === 2) {
+            const [context, color] = parts;
+            const formattedContext = formatContext(context);
+            return `${formattedContext ? `Season: ${formattedContext}, ` : ''}Color: ${capitalize(color.replace(/([a-zA-Z])([0-9])/g, '$1 $2'))}`;
+        }
+    }
+
+    const parts = colorData.split('.');
+    if (parts.length === 3) {
+        const [, context, color] = parts;
+        const formattedContext = formatContext(context);
+        return `${formattedContext ? `Season: ${formattedContext}, ` : ''}Color: ${capitalize(color.replace(/([a-zA-Z])([0-9])/g, '$1 $2'))}`;
+    } else if (parts.length === 2) {
+        const [context, color] = parts;
+        const formattedContext = formatContext(context);
+        return `${formattedContext ? `Season: ${formattedContext}, ` : ''}Color: ${capitalize(color.replace(/([a-zA-Z])([0-9])/g, '$1 $2'))}`;
+    } else {
+        return `Color: ${capitalize(colorData)}`;
+    }
+}
+
+function formatContext(context) {
+    const formattedContext = context.replace(/(\d{4})/, ' $1')
+                                    .replace(/-/g, ' ')
+                                    .replace(/\b\w/g, char => char.toUpperCase());
+    return formattedContext.split(' ').length > 1 ? formattedContext : '';
 }
