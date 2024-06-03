@@ -40,7 +40,7 @@ body {
     max-width: 100%;
 }
 
-button {
+.drop-zone {
     flex-direction: column;
     font-size: 14px;
     align-items: center;
@@ -55,9 +55,10 @@ button {
     -webkit-user-select: none;
     touch-action: manipulation;
     cursor: pointer;
+    display: inline-flex;
 }
 
-button:active {
+.drop-zone:active {
     background: linear-gradient(180deg, #27A2F3 0%, #1B95E8 100%);
 }
 

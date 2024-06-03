@@ -67,6 +67,7 @@ const faceDB = {
     "activity digital": "Legacy Activity Digital",
     "astronomy": "Legacy Astronomy",
     "breathe": "Legacy Breathe",
+    "bundle": "Legacy Stripes",
     "chronograph": "Legacy Chronograph",
     "color": "Legacy Color",
     "explorer": "Legacy Explorer",
@@ -96,14 +97,32 @@ document.getElementById('customButton').addEventListener('click', () => {
 
 document.getElementById('fileInput').addEventListener('change', async (event) => {
     const file = event.target.files[0];
+    handleFile(file);
+});
+
+const dropZone = document.getElementById('customButton');
+
+dropZone.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    dropZone.classList.add('drag-over');
+});
+
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drag-over');
+});
+
+dropZone.addEventListener('drop', (event) => {
+    event.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = event.dataTransfer.files[0];
+    handleFile(file);
+});
+
+async function handleFile(file) {
     const output = document.getElementById('jsonOutput');
     const snapshotImageElement = document.getElementById('snapshotImage');
-    
-    if (!file) {
-        return;
-    }
 
-    if (!file.name.endsWith('.watchface')) {
+    if (!file || !file.name.endsWith('.watchface')) {
         snapshotImageElement.style.display = 'none';
         snapshotImageElement.src = '';
         output.textContent = 'Unsupported file, only .watchface files can be processed.';
@@ -158,7 +177,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         if (faceName) {
             outputText += `Name: ${faceName}\n`;
         }
-        
+
         if (colorData) {
             if (typeof colorData === 'string') {
                 if (colorData.includes('.')) {
@@ -168,7 +187,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
                 }
             }
         }
-        
+
         if (bundleId) {
             outputText += `Bundle ID: ${bundleId}\n`;
         }
@@ -183,7 +202,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
                 outputText += '\nColors:\n';
                 const slots = colorData['slots'];
                 Object.keys(slots).sort((a, b) => a - b).forEach(slot => {
-                    outputText += `Slot ${parseInt(slot) + 1}: ${capitalize(slots[slot])}\n`;
+                    outputText += `Stripe ${parseInt(slot) + 1}: ${capitalize(slots[slot])}\n`;
                 });
             }
         }
@@ -207,7 +226,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         snapshotImageElement.src = '';
         output.textContent = `Error: ${err.message}`;
     }
-});
+}
 
 function formatComplicationKey(key) {
     const words = key.split('-').map(word => capitalize(word));
