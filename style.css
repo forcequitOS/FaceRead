@@ -1,5 +1,5 @@
 body {
-    background-color: #f8f9fa;
+    background-color: #ececec;
     font-family: system-ui, -apple-system, ui-sans-serif, BlinkMacSystemFont, 'SF Pro', Roboto, 'Fira Sans', Oxygen, Ubuntu, Cantarell, 'Segoe UI', 'Helvetica Neue', 'Noto Sans', Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -39,14 +39,14 @@ body {
     max-width: 100%;
 }
 
-.drop-zone, button {
+.drop-zone {
     flex-direction: column;
     font-size: 14px;
     align-items: center;
     padding: 6px 14px;
     border-radius: 10px;
     border: none;
-    color: #fff;
+    color: #ffffff;
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
     background-origin: border-box;
     box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
@@ -57,8 +57,29 @@ body {
     display: inline-flex;
 }
 
-.drop-zone:active, button:active {
+.drop-zone:active {
     background: linear-gradient(180deg, #27A2F3 0%, #1B95E8 100%);
+}
+
+button {
+    flex-direction: column;
+    font-size: 14px;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 10px;
+    border: none;
+    color: #000000;
+    box-shadow: 0px 0.5px 1.5px rgba(213, 213, 213, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
+    background-color: #f6f6f6;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    cursor: pointer;
+    display: inline-flex;
+}
+
+button:active {
+    background-color: #efefef;
 }
 
 #output {
@@ -67,7 +88,7 @@ body {
 
 pre {
     text-align: left;
-    background-color: #f1f1f1;
+    background-color: #dfdfdf;
     padding: 10px;
     border-radius: 5px;
     max-height: 400px;
@@ -79,6 +100,16 @@ pre {
     pre {
         background-color: #383636;
         color: #f8f9fa;
+    }
+    
+    button {
+        color: #ffffff;
+        background-color: #5f5f5f;
+        box-shadow: 0px 0.5px 1.5px rgba(127, 127, 127, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
+    }
+    
+    button:active {
+        background-color: #767676;
     }
 }
 
