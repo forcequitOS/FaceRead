@@ -116,16 +116,53 @@ document.addEventListener('drop', (event) => {
     handleFile(file);
 });
 
+document.addEventListener('paste', async (event) => {
+    const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    for (const item of items) {
+        if (item.kind === 'file') {
+            const file = item.getAsFile();
+            if (file.name.endsWith('.watchface')) {
+                handleFile(file);
+                return;
+            } else {
+                incorrectFileType();
+            }
+        } else if (item.kind === 'string' && item.type.includes('url')) {
+            const url = item.getAsString(async (url) => {
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const fileBlob = await response.blob();
+                        const file = new File([fileBlob], 'downloaded.watchface', { type: 'application/watchface' });
+                        handleFile(file);
+                    } else {
+                        console.error('Failed to fetch .watchface file from URL');
+                    }
+                } catch (error) {
+                    console.error('Error occurred while fetching .watchface file:', error);
+                }
+            });
+        }
+    }
+});
+
+function incorrectFileType() {
+    const output = document.getElementById('jsonOutput');
+    const snapshotImageElement = document.getElementById('snapshotImage');
+    const toolboxElement = document.getElementById('toolbox');
+    snapshotImageElement.style.display = 'none';
+    snapshotImageElement.src = '';
+    toolboxElement.style.display = 'none';
+    output.textContent = 'Unsupported file, only .watchface files can be processed.';
+}
+
 async function handleFile(file) {
     const output = document.getElementById('jsonOutput');
     const snapshotImageElement = document.getElementById('snapshotImage');
     const toolboxElement = document.getElementById('toolbox');
 
     if (!file || !file.name.endsWith('.watchface')) {
-        snapshotImageElement.style.display = 'none';
-        snapshotImageElement.src = '';
-        toolboxElement.style.display = 'none';
-        output.textContent = 'Unsupported file, only .watchface files can be processed.';
+        incorrectFileType();
         return;
     }
 
