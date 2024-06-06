@@ -124,6 +124,7 @@ async function handleFile(file) {
     if (!file || !file.name.endsWith('.watchface')) {
         snapshotImageElement.style.display = 'none';
         snapshotImageElement.src = '';
+        toolboxElement.style.display = 'none';
         output.textContent = 'Unsupported file, only .watchface files can be processed.';
         return;
     }
