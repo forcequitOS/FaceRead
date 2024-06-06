@@ -116,10 +116,10 @@ document.addEventListener('drop', (event) => {
     handleFile(file);
 });
 
-// Function to handle file processing
 async function handleFile(file) {
     const output = document.getElementById('jsonOutput');
     const snapshotImageElement = document.getElementById('snapshotImage');
+    const toolboxElement = document.getElementById('toolbox');
 
     if (!file || !file.name.endsWith('.watchface')) {
         snapshotImageElement.style.display = 'none';
@@ -129,6 +129,8 @@ async function handleFile(file) {
     }
 
     const zip = new JSZip();
+    let faceJson = null;
+    let faceJsonText = '';
 
     try {
         const zipData = await zip.loadAsync(file);
@@ -143,8 +145,8 @@ async function handleFile(file) {
         let complications = {};
 
         if (faceJsonFile) {
-            const faceJsonText = await faceJsonFile.async('text');
-            const faceJson = JSON.parse(faceJsonText);
+            faceJsonText = await faceJsonFile.async('text');
+            faceJson = JSON.parse(faceJsonText);
             bundleId = faceJson['bundle id'] || '';
             analyticsId = faceJson['analytics id'] || '';
             faceType = faceJson['face type'] || '';
@@ -201,7 +203,7 @@ async function handleFile(file) {
             });
         }
 
-        outputText += `\n`
+        outputText += `\n`;
 
         if (Object.keys(complications).length > 0) {
             outputText += 'Complications:\n';
@@ -215,11 +217,65 @@ async function handleFile(file) {
         }
 
         output.textContent = outputText;
+
+        // Store the faceJson for the invert button functionality
+        window.faceJson = faceJson;
+        window.zip = zip;
+
+        // Check if the watch face is modifiable
+        if (faceJsonText.includes('circular') || faceJsonText.includes('dial') || faceJsonText.includes('fullscreen')) {
+            toolboxElement.style.display = 'block';
+        } else {
+            toolboxElement.style.display = 'none';
+        }
     } catch (err) {
         snapshotImageElement.style.display = 'none';
         snapshotImageElement.src = '';
         output.textContent = `Error: ${err.message}`;
     }
+}
+
+document.getElementById('invert').addEventListener('click', () => {
+    if (window.faceJson) {
+        if (!window.faceJson.isInverted) {
+            invertFaceJson(window.faceJson);
+            window.faceJson.isInverted = true;
+        }
+        downloadModifiedWatchface(window.zip, window.faceJson);
+    }
+});
+
+function invertFaceJson(faceJson) {
+    const invertMappings = {
+        'circular': 'fullscreen',
+        'dial': 'fullscreen',
+        'fullscreen': 'circular'
+    };
+
+    const invertKey = (key) => {
+        return invertMappings[key] || key;
+    };
+
+    for (const key in faceJson) {
+        if (typeof faceJson[key] === 'string') {
+            faceJson[key] = faceJson[key].split(' ').map(invertKey).join(' ');
+        } else if (typeof faceJson[key] === 'object') {
+            invertFaceJson(faceJson[key]);
+        }
+    }
+}
+
+async function downloadModifiedWatchface(zip, faceJson) {
+    zip.file('face.json', JSON.stringify(faceJson, null, 2));
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(new Blob([content], { type: 'application/vnd.apple.watchface' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Inverted.watchface';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
 
 function formatComplicationKey(key) {

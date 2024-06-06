@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:description" content="A simple web-based inspector for Apple Watch Face files.">
-    <meta name="description" content="A simple web-based inspector for Apple Watch Face files.">
-    <meta property="og:title" content="Watch Face Inspector">
+    <meta property="og:description" content="A simple web-based inspector and toolkit for Apple Watch Face files.">
+    <meta name="description" content="A simple web-based inspector and toolkit for Apple Watch Face files.">
+    <meta property="og:title" content="Watch Face Toolkit">
     <meta property="og:image" content="thumbnail.png">
     <meta property="og:url" content="https://watchface.pages.dev/index.html">
-    <meta name="twitter:card" content="A simple web-based inspector for Apple Watch Face files.">
+    <meta name="twitter:card" content="A simple web-based inspector and toolkit for Apple Watch Face files.">
     <meta name="twitter:image" content="https://watchface.pages.dev/thumbnail.png">
     <title>FaceRead</title>
     <link rel="stylesheet" href="style.css">
@@ -21,15 +21,20 @@
         <h1>FaceRead</h1>
         <div id="customButton" class="drop-zone">Select or Drop Watch Face</div>
         <input type="file" id="fileInput" accept=".watchface" style="display:none;">
-        <div id="output">
-            <h3>Watch Face Inspector</h3>
+        <div id="inspector">
+            <h3>Inspector</h3>
             <img id="snapshotImage" alt="Snapshot of Watch Face produced by source">
             <pre id="jsonOutput"></pre>
+        </div>
+        <div id="toolbox" style="display: none;">
+            <h3>Toolkit</h3>
+            <button id="invert">Invert Style</button>
         </div>
     </div>
     <div class="footer">
         <p class="footer-text">Created by <a href="https://github.com/CtrliPhones/FaceRead" class="footer-link">CtrliPhones</a> in CotEditor</p>
         <p class="footer-text">Version 1.0 Public Beta VIII</p>
+        <p class="footer-text">&copy; CtrliPhones 2024</p>
     </div>
     <script src="script.js"></script>
 </body>
