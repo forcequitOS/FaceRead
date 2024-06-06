@@ -1,4 +1,4 @@
-# Watch Face Inspector / FaceRead
+# Watch Face Toolkit / FaceRead
 ### A simple tool to gather data about Apple Watch Face (.watchface) files
 This tool is available for your usage at https://watchface.pages.dev
 
