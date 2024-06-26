@@ -1,8 +1,8 @@
-# Watch Face Toolkit
-### A simple tool to gather data about and modify Apple Watch Face (.watchface) files
-This tool is available for your usage at https://watchface.pages.dev
+![Header](https://raw.githubusercontent.com/CtrliPhones/FaceRead/main/thumbnail.png)
+## A simple tool to gather data about and modify Apple Watch Face (.watchface) files.
+Available today at https://watchface.pages.dev!
 
-*This is currently a public beta and is incomplete. Even when it is complete, don't rely on this for anything, not that you would anyways.*
+*This is currently a public beta and is incomplete. Even when it is complete, it won't be 100% problem-free, use it with a grain of salt that it won't be exactly what the Watch app is.*
 
 **What does this do?** It's simple.
 - Extract any given .watchface file as a .zip (as that's all .watchface files are, I'll make a writeup on that someday.)
