@@ -1,5 +1,5 @@
-# Watch Face Toolkit / FaceRead
-### A simple tool to gather data about Apple Watch Face (.watchface) files
+# Watch Face Toolkit
+### A simple tool to gather data about and modify Apple Watch Face (.watchface) files
 This tool is available for your usage at https://watchface.pages.dev
 
 *This is currently a public beta and is incomplete. Even when it is complete, don't rely on this for anything, not that you would anyways.*
@@ -12,16 +12,15 @@ This tool is available for your usage at https://watchface.pages.dev
 - Gathers the already bundled snapshot image from the watch face file to display to the user
 
 **What doesn't this do?** A lot.
-- Provide a way to edit watch faces (currently)
-- Provide the names of select watch faces (Most are there, though)
-- Allow you to view photos from a Photos or Portraits watch face (for now)
-- Provide color previews of watch faces
+- Provide the names of select watch faces (Most are there, but please contribute to [faceDB](https://gist.github.com/CtrliPhones/f8d7e006f80a2c78e378f093608667fa) if you have an Apple Watch Hèrmes by messaging your exclusive .watchface files to me on [Discord](https://discord.com/users/663444424155463682) or in the gist comments!)
+- Provide super accurate information for every watch face (I try, however some things will naturally be missed and many watch faces don't use human readable color, style, detail, etc. names internally)
+- Allow you to view individual photos from a Photos, Legacy Photos, or Portraits watch face (for now)
 
-*All of these features are being worked on*, just not actively.
+These features *are being worked on* to the best of my ability currently.
 
 **So why does this exist?** A few reasons.
 - This provides a way to view some information about .watchface files if you don't own an Apple device in an easy, human-readable way
-- This provides a way to view informaton about .watchface files beyond a preview image on a Mac or iPad
+- This provides a way to view informaton about .watchface files beyond a small thumbnail image on a Mac or iPad
 - I wanted an example project to showcase some of the cool stuff hidden in these files to make others more interested
 - This shows some more internal information about these faces, like their specific identifiers (which would require manual extraction to find otherwise)
 - I got bored.
