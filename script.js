@@ -19,12 +19,13 @@ const faceDB = {
     "up-next-r": "Siri",
     "simple-r": "Simple",
     "pride": "Pride Digital",
+    "plumeria": "Pride Radiance",
     "prideweave": "Pride Woven",
     "lilypad": "Pride Threads",
     "com.apple.parameciumface": "Pride Celebration",
     "ultracube": "Portraits",
     "snowglobe": "Playtime",
-    "photos": "Photos",
+    "parmesan": "Photos",
     "crosswind": "Palette",
     "big-numerals-analog": "Numerals Mono",
     "big-numerals-digital": "Numerals Duo",
@@ -67,7 +68,7 @@ const faceDB = {
     "activity digital": "Legacy Activity Digital",
     "astronomy": "Legacy Astronomy",
     "breathe": "Legacy Breathe",
-    "bundle": "Legacy Stripes",
+    "bundle": "Stripes",
     "chronograph": "Legacy Chronograph",
     "color": "Legacy Color",
     "explorer": "Legacy Explorer",
@@ -75,6 +76,7 @@ const faceDB = {
     "metallic": "Legacy Liquid Metal",
     "Mickey Mouse": "Legacy Mickey Mouse",
     "modular": "Legacy Modular",
+    "photos": "Legacy Photos",
     "victory analog": "Legacy Nike Analog",
     "victory digital": "Legacy Nike Digital",
     "numerals": "Legacy Numerals",
@@ -125,23 +127,9 @@ document.addEventListener('paste', async (event) => {
                 handleFile(file);
                 return;
             } else {
+                const output = document.getElementById('jsonOutput');
                 incorrectFileType();
             }
-        } else if (item.kind === 'string' && item.type.includes('url')) {
-            const url = item.getAsString(async (url) => {
-                try {
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        const fileBlob = await response.blob();
-                        const file = new File([fileBlob], 'downloaded.watchface', { type: 'application/watchface' });
-                        handleFile(file);
-                    } else {
-                        console.error('Failed to fetch .watchface file from URL');
-                    }
-                } catch (error) {
-                    console.error('Error occurred while fetching .watchface file:', error);
-                }
-            });
         }
     }
 });
@@ -181,6 +169,7 @@ async function handleFile(file) {
         let faceType = '';
         let colorData = null;
         let complications = {};
+        let customizationData = {};
 
         if (faceJsonFile) {
             faceJsonText = await faceJsonFile.async('text');
@@ -190,6 +179,12 @@ async function handleFile(file) {
             faceType = faceJson['face type'] || '';
             if (faceJson.customization) {
                 colorData = faceJson.customization.color || null;
+                customizationData = {
+                    style: faceJson.customization.style || null,
+                    detail: faceJson.customization.detail || null,
+                    content: faceJson.customization.content || null,
+                    position: faceJson.customization.position || null
+                };
             }
         }
 
@@ -229,7 +224,8 @@ async function handleFile(file) {
         }
         if (analyticsId) {
             outputText += `Analytics ID: ${analyticsId}\n`;
-        } else if (faceType) {
+        }
+        if (faceType) {
             outputText += `Face Type: ${faceType}\n`;
         }
 
@@ -241,28 +237,34 @@ async function handleFile(file) {
             });
         }
 
-        outputText += `\n`;
+        const formattedCustomizationData = formatCustomizationData(customizationData);
+        if (formattedCustomizationData) {
+            outputText += `\n${formattedCustomizationData}\n`;
+        }
 
         if (Object.keys(complications).length > 0) {
-            outputText += 'Complications:\n';
+            outputText += '\nComplications:\n';
             const sortedKeys = Object.keys(complications).sort();
             for (const key of sortedKeys) {
                 const formattedKey = formatComplicationKey(key);
                 outputText += `${formattedKey}: ${complications[key]}\n`;
             }
         } else {
-            outputText += 'Complications Unsupported';
+            outputText += '\nComplications Unsupported';
         }
 
         output.textContent = outputText;
 
-        // Store the faceJson for the invert button functionality
         window.faceJson = faceJson;
         window.zip = zip;
 
-        // Check if the watch face is modifiable
-        if (faceJsonText.includes('circular') || faceJsonText.includes('dial') || faceJsonText.includes('fullscreen')) {
-            toolboxElement.style.display = 'block';
+        if (faceJson.customization) {
+            const customizationText = JSON.stringify(faceJson.customization);
+            if (customizationText.includes('circular') || customizationText.includes('dial') || customizationText.includes('fullscreen') || customizationText.includes('analog') || customizationText.includes('digital')) {
+                toolboxElement.style.display = 'block';
+            } else {
+                toolboxElement.style.display = 'none';
+            }
         } else {
             toolboxElement.style.display = 'none';
         }
@@ -287,7 +289,11 @@ function invertFaceJson(faceJson) {
     const invertMappings = {
         'circular': 'fullscreen',
         'dial': 'fullscreen',
-        'fullscreen': 'circular'
+        'fullscreen': 'circular',
+        'analog': 'digital',
+        'digital': 'analog',
+        'on': 'off',
+        'off': 'on'
     };
 
     const invertKey = (key) => {
@@ -317,7 +323,9 @@ async function downloadModifiedWatchface(zip, faceJson) {
 }
 
 function formatComplicationKey(key) {
-    const words = key.split('-').map(word => capitalize(word));
+    const words = key.replace(/(\d+)/g, ' $1')
+                     .split('-')
+                     .map(word => capitalize(word));
     return words.join(' ');
 }
 
@@ -362,4 +370,53 @@ function formatContext(context) {
                                     .replace(/-/g, ' ')
                                     .replace(/\b\w/g, char => char.toUpperCase());
     return formattedContext.split(' ').length > 1 ? formattedContext : '';
+}
+
+function formatCustomization(context) {
+    const formattedContext = context.replace(/(\d{4})/, ' $1')
+                                    .replace(/-/g, ' ')
+                                    .replace(/\b\w+/g, (word, index) => {
+                                        if (index === 0 && context.split('.').length > 1) {
+                                            return word.length > 1 ? word.charAt(0).toUpperCase() + word.slice(1) : word.toLowerCase();
+                                        } else {
+                                            return word.charAt(0).toUpperCase() + word.slice(1);
+                                        }
+                                    });
+    return formattedContext;
+}
+
+function formatCustomizationData(customizationData) {
+    const formattedData = [];
+    const keys = ['style', 'detail', 'content', 'position'];
+
+    const detailMappings = {
+        'minimal': 'Minimal (I)',
+        'simple': 'Simple (II)',
+        'medium': 'Medium (III)',
+        'detailed': 'Detailed (IV)',
+        '1': '1 Stripe',
+        '2': '2 Stripes',
+        '3': '3 Stripes',
+        '4': '4 Stripes',
+        '5': '5 Stripes',
+        '6': '6 Stripes',
+        '7': '7 Stripes',
+        '8': '8 Stripes',
+        '9': '9 Stripes'
+    };
+
+    keys.forEach(key => {
+        if (customizationData[key]) {
+            let value = customizationData[key];
+            if (key === 'detail') {
+                value = detailMappings[value] || value;
+            }
+            if (key === 'position' && !isNaN(value)) {
+                value = `${value}°`;
+            }
+            formattedData.push(`${capitalize(key)}: ${formatCustomization(value)}`);
+        }
+    });
+
+    return formattedData.join('\n');
 }
