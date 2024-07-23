@@ -1,4 +1,4 @@
-![Header](https://raw.githubusercontent.com/CtrliPhones/FaceRead/main/thumbnail.png)
+![Header](https://raw.githubusercontent.com/forcequitOS/FaceRead/main/thumbnail.png)
 ## A simple tool to gather data about and modify Apple Watch Face (.watchface) files.
 Available today at https://watchface.pages.dev!
 
