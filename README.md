@@ -12,7 +12,7 @@ Available today at https://watchface.pages.dev!
 - Gathers the already bundled snapshot image from the watch face file to display to the user
 
 **What doesn't this do?** A lot.
-- Provide the names of select watch faces (Most are there, but please contribute to [faceDB](https://gist.github.com/CtrliPhones/f8d7e006f80a2c78e378f093608667fa) if you have an Apple Watch Hèrmes by messaging your exclusive .watchface files to me on [Discord](https://discord.com/users/663444424155463682) or in the gist comments!)
+- Provide the names of select watch faces (Most are there, but please contribute to [faceDB](https://gist.github.com/forcequitOS/f8d7e006f80a2c78e378f093608667fa) if you have an Apple Watch Hèrmes by sending your exclusive .watchface files to me in the gist comments!)
 - Provide super accurate information for every watch face (I try, however some things will naturally be missed and many watch faces don't use human readable color, style, detail, etc. names internally)
 - Allow you to view individual photos from a Photos, Legacy Photos, or Portraits watch face (for now)
 
